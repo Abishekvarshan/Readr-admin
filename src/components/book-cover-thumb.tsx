@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BookOpen } from "lucide-react";
+import { optimizeCloudinaryImage } from "@/lib/utils";
 
 export function BookCoverThumb({ src, title }: { src: string; title: string }) {
   const [failed, setFailed] = useState(false);
@@ -11,5 +12,14 @@ export function BookCoverThumb({ src, title }: { src: string; title: string }) {
   }
 
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt={title} className="cover-image" onError={() => setFailed(true)} />;
+  return (
+    <img
+      src={optimizeCloudinaryImage(src, 260)}
+      alt={title}
+      className="cover-image"
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailed(true)}
+    />
+  );
 }

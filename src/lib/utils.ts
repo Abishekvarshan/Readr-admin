@@ -24,3 +24,12 @@ export function slugify(value: string) {
 export function formValue(formData: FormData, key: string) {
   return formData.get(key)?.toString().trim() ?? "";
 }
+
+export function optimizeCloudinaryImage(url: string, width = 700) {
+  if (!url.includes("res.cloudinary.com") || !url.includes("/image/upload/")) {
+    return url;
+  }
+
+  const transforms = `f_auto,q_auto,w_${width},c_limit`;
+  return url.replace("/image/upload/", `/image/upload/${transforms}/`);
+}

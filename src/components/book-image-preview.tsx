@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ImagePlus } from "lucide-react";
+import { optimizeCloudinaryImage } from "@/lib/utils";
 
 export function BookImagePreview({ initialUrl = "", title = "Book cover" }: { initialUrl?: string; title?: string }) {
   const [previewUrl, setPreviewUrl] = useState(initialUrl);
@@ -45,7 +46,14 @@ export function BookImagePreview({ initialUrl = "", title = "Book cover" }: { in
     <div className="cover-preview">
       {previewUrl && !imageFailed ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={previewUrl} alt={title} className="cover-image" onError={() => setImageFailed(true)} />
+        <img
+          src={optimizeCloudinaryImage(previewUrl, 420)}
+          alt={title}
+          className="cover-image"
+          loading="lazy"
+          decoding="async"
+          onError={() => setImageFailed(true)}
+        />
       ) : (
         <div className="cover-empty">
           <ImagePlus size={34} aria-hidden="true" />
