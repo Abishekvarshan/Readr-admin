@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { BookOpen, Edit3, Plus } from "lucide-react";
+import { Edit3, Plus } from "lucide-react";
 import { AdminNav } from "@/components/admin-nav";
+import { BookCoverThumb } from "@/components/book-cover-thumb";
 import { DeleteBookButton } from "@/components/book-form";
 import { requireRole } from "@/lib/auth";
 import { getBooks } from "@/lib/data";
@@ -36,12 +37,7 @@ export default async function BooksPage({
           {books.map((book) => (
             <article className="saved-book-card" key={book.id}>
               <div className="saved-book-cover">
-                {book.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={book.image_url} alt={book.title} className="cover-image" />
-                ) : (
-                  <BookOpen size={30} aria-hidden="true" />
-                )}
+                <BookCoverThumb src={book.image_url} title={book.title} />
               </div>
               <div className="saved-book-body">
                 <div>

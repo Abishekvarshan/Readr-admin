@@ -5,6 +5,7 @@ import { ImagePlus } from "lucide-react";
 
 export function BookImagePreview({ initialUrl = "", title = "Book cover" }: { initialUrl?: string; title?: string }) {
   const [previewUrl, setPreviewUrl] = useState(initialUrl);
+  const [imageFailed, setImageFailed] = useState(false);
 
   useEffect(() => {
     const imageUrlField = document.querySelector<HTMLInputElement>('input[name="imageUrl"]');
@@ -12,7 +13,10 @@ export function BookImagePreview({ initialUrl = "", title = "Book cover" }: { in
     let objectUrl = "";
 
     function updateFromUrl() {
-      if (imageUrlField?.value) setPreviewUrl(imageUrlField.value);
+      if (imageUrlField?.value) {
+        setImageFailed(false);
+        setPreviewUrl(imageUrlField.value);
+      }
     }
 
     function updateFromFile() {
@@ -21,6 +25,7 @@ export function BookImagePreview({ initialUrl = "", title = "Book cover" }: { in
 
       if (objectUrl) URL.revokeObjectURL(objectUrl);
       objectUrl = URL.createObjectURL(file);
+      setImageFailed(false);
       setPreviewUrl(objectUrl);
     }
 
@@ -38,13 +43,13 @@ export function BookImagePreview({ initialUrl = "", title = "Book cover" }: { in
 
   return (
     <div className="cover-preview">
-      {previewUrl ? (
+      {previewUrl && !imageFailed ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={previewUrl} alt={title} className="cover-image" />
+        <img src={previewUrl} alt={title} className="cover-image" onError={() => setImageFailed(true)} />
       ) : (
         <div className="cover-empty">
           <ImagePlus size={34} aria-hidden="true" />
-          <span>Image preview</span>
+          <span>{previewUrl ? "Image URL did not load. Choose a file or paste another URL." : "Image preview"}</span>
         </div>
       )}
     </div>

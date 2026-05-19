@@ -23,7 +23,7 @@ Rules:
 - price must be a number in Sri Lankan rupees.
 - stock must be a number. Use 5 unless the admin asks for another stock.
 - sellerName must be "MyBook Market" unless the admin gives another seller.
-- imageUrl must be a real-looking public book cover URL if you know one, otherwise use an empty string.
+- Prefer imageUrl from Open Library covers using the ISBN when possible. Do not invent Amazon image URLs.
 - description must be useful for a customer and at least 2 sentences.
 - If exact ISBN or published year is uncertain, use the best-known value.`;
 
@@ -72,8 +72,13 @@ function friendlyGeminiError(status: number, body: string) {
 function normalizeBookJson(book: Record<string, unknown>) {
   const isbn = typeof book.isbn === "string" ? book.isbn.replace(/[^0-9Xx]/g, "") : "";
   const imageUrl = typeof book.imageUrl === "string" ? book.imageUrl : "";
+  const shouldUseOpenLibrary =
+    !imageUrl ||
+    imageUrl.includes("example.com") ||
+    imageUrl.includes("m.media-amazon.com") ||
+    imageUrl.includes("images-na.ssl-images-amazon.com");
 
-  if (isbn && (!imageUrl || imageUrl.includes("example.com"))) {
+  if (isbn && shouldUseOpenLibrary) {
     book.imageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
   }
 
