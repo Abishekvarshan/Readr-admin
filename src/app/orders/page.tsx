@@ -33,39 +33,57 @@ export default async function OrdersPage({
               <div className="order-topline">
                 <div>
                   <p className="order-id">{order.id}</p>
-                  <p className="subtle">{order.customer_name} · {order.customer_email} · {order.customer_phone}</p>
-                  <p className="subtle">{order.customer_address}</p>
+                  <p className="subtle">Placed by {order.customer_name}</p>
                 </div>
-                <strong>{formatCurrency(order.total_amount, order.currency)}</strong>
+                <strong className="order-total">{formatCurrency(order.total_amount, order.currency)}</strong>
+              </div>
+
+              <div className="order-info-grid">
+                <div>
+                  <p className="order-label">Contact</p>
+                  <p className="order-value">{order.customer_email}</p>
+                  <p className="subtle">{order.customer_phone}</p>
+                </div>
+                <div>
+                  <p className="order-label">Delivery address</p>
+                  <p className="order-value">{order.customer_address}</p>
+                </div>
               </div>
 
               {!!order.order_items?.length && (
                 <ul className="order-items">
                   {order.order_items.map((item) => (
                     <li key={item.id ?? `${order.id}-${item.title}`}>
-                      {item.quantity} x {item.title} at {formatCurrency(item.unit_price, order.currency)}
+                      <span>{item.quantity} x {item.title}</span>
+                      <strong>{formatCurrency(item.unit_price, order.currency)}</strong>
                     </li>
                   ))}
                 </ul>
               )}
 
-              <form action={updateOrderAction} className="order-grid" style={{ marginTop: 14 }}>
+              <form action={updateOrderAction} className="order-grid">
                 <input type="hidden" name="id" value={order.id} />
-                <select className="field" name="orderStatus" defaultValue={order.order_status}>
-                  <option value="pending">Pending</option>
-                  <option value="paid">Paid</option>
-                  <option value="cancelled">Cancelled</option>
-                  <option value="failed">Failed</option>
-                </select>
-                <select className="field" name="paymentStatus" defaultValue={order.payment_status}>
-                  <option value="unpaid">Unpaid</option>
-                  <option value="paid">Paid</option>
-                  <option value="refunded">Refunded</option>
-                  <option value="failed">Failed</option>
-                </select>
-                <button className="button-primary wide" type="submit">
+                <label>
+                  <span className="order-label">Order status</span>
+                  <select className="field" name="orderStatus" defaultValue={order.order_status}>
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="failed">Failed</option>
+                  </select>
+                </label>
+                <label>
+                  <span className="order-label">Payment</span>
+                  <select className="field" name="paymentStatus" defaultValue={order.payment_status}>
+                    <option value="unpaid">Unpaid</option>
+                    <option value="paid">Paid</option>
+                    <option value="refunded">Refunded</option>
+                    <option value="failed">Failed</option>
+                  </select>
+                </label>
+                <button className="button-primary order-save" type="submit">
                   <Save size={17} />
-                  Save order
+                  Save
                 </button>
               </form>
             </article>

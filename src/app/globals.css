@@ -391,6 +391,8 @@ textarea {
 }
 
 .order-row {
+  display: grid;
+  gap: 14px;
   padding: 18px;
 }
 
@@ -422,9 +424,9 @@ textarea {
 
 .order-topline {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 14px;
 }
 
 .order-id {
@@ -432,10 +434,64 @@ textarea {
   font-weight: 800;
 }
 
-.order-items {
-  margin: 12px 0 0;
-  padding-left: 18px;
+.order-total {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.order-info-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.order-label {
+  display: block;
+  margin: 0 0 6px;
   color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.order-value {
+  margin: 0;
+  color: var(--ink-soft);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.order-items {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  border-radius: 8px;
+  background: rgba(24, 108, 101, 0.05);
+  padding: 12px;
+  color: var(--muted);
+  list-style: none;
+}
+
+.order-items li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.order-grid {
+  align-items: end;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.order-save {
+  min-width: 120px;
 }
 
 .login-page {
@@ -469,6 +525,7 @@ textarea {
   .grid-3,
   .form-grid,
   .order-grid,
+  .order-info-grid,
   .ai-book-row,
   .book-form,
   .book-row,
